@@ -177,6 +177,7 @@ the first form (the one that has `sequence` as a process).
     - The `next_page` process must be given the sequence name.
     - If only one sequence is needed, `sequence.name` may be omitted, in which case, the name defaults to `default`.
     - With only one sequence `next_page` should be set to `true`.
+1. In order to stop a sequence, and return to the first stage with no data in the form, include a `submit` button, together with the task `sequence_reset`.
 
 ## To Do
 
