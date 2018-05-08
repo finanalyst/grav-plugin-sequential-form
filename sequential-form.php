@@ -60,6 +60,12 @@ class SequentialFormPlugin extends Plugin
                 if ($params == true ) $seq_name .= 'default';
                     else $seq_name .=  $params;
                 $sumForm = $this->grav['session']->getFlashObject( $seq_name ); // this also removes the object from the session
+                // trap a sequence reset button
+                if (isset($_POST['task']) && $_POST['task'] == 'sequence_reset' ) {
+                    $this->grav['session']->getFlashObject('form' ); // reset form
+                    $sequence = $sumForm->getData()->toArray()['_sequence'];
+                    $this->grav->redirect($sequence['origin'] . '/' . $url);
+                }
                 if ( $sumForm ) {
                     // sequence has started so we have sequence data
                     $data = $sumForm->getData()->toArray();

@@ -46,13 +46,9 @@ Note that if you use the admin plugin, a file with your configuration, and named
 
 The use case is a user registration system that required data collection from the user, a safety video to be seen, with confirmation it was seen, a terms and conditions page that required confirmation the terms are agreed to, processing of the data.
 
-A single form is fine to collect data, but the process sequence in the form cannot be delayed.
-
-Two new `Form` processes are provided with this plugin.
+`SequentialFormPlugin` provides two new `Form` processes and a`sequence` template to process the form and a banner that shows each stage of the sequence. The `Form` processes are
 1. `sequence` - parameters list the sequence of routes to be followed in order.
 1. `next_page` - the process to be included in the subsequent forms.
-
-The plugin also provides the `sequence` template, to be used in the sub pages of the sequence.
 
 ## Example
 
@@ -96,6 +92,10 @@ form:
           routes:
               - video
               - terms
+          icons:
+              - address-card
+              - video-camera
+              - thumbs-up
       - display: start/final
 ---
     # Collect Data
@@ -117,6 +117,9 @@ form:
     buttons:
         - type: submit
           value: Watched Safety Video
+        - type: submit
+          value: 'Did Not Watch'
+          task: sequence_reset
     process:
         - next_page: true
 ---
@@ -136,6 +139,9 @@ form:
     buttons:
         - type: submit
           value: Agree to Conditions
+        - type: submit
+          value: 'Do not agree'
+          task: sequence_reset
     process:
         - next_page: true
 ---
@@ -149,25 +155,31 @@ title: final
 ---
 ```
 
-### Comments
+### Explanation
 
-1. To provide for more than one sequence, all sequences must be named.
-    - The name of the sequence is given in the `sequence.name` page header.
-    - `sequence.name` must be included in the header of every sub-page of the sequence.
-    - The `next_page` process must be given the sequence name.
-2. `routes` is a mandatory part of the `sequence` process.
+1. `routes` is a mandatory part of the `sequence` process.
   - Each route must correspond to the sub-directory name.
-1. In each sub-page, the *Form* process `next_page` must be set to the sequence name.
+1. In each sub-page, the *Form* process `next_page` must be set to either `true` or to the sequence name (see below).
 1. Data can be added through forms on every page, but the fields must be *pre-declared*  in
-the first form, with the type 'hidden' so that they are not shown in the first form.
+the first form (the one that has `sequence` as a process).
+    - By using the type `hidden` the field will not  be shown in the first form.
 1. A banner is included to show the order of the stages.
     - If no banner is required, then set `sequence.banner: false` in the page header.
     - The class of the banner is `sqform-banner`, which can be set in a custom.css. If this is required, then set `use_built_in_css` to `false` in the plugin configuration.
-1. The form content can be set above, or below the page contents.
+1. Each stage can be identified with an icon, using a 'font-awesome' icon name.
+    - There should be one more icon than routes in order to mark the zeroth page.
+    - If no icons are defined, or less icons than needed, then the word 'Stage' and the Stage number (starting with 0) is shown.
+1. The form content can be positioned `above`, or `below` the page contents.
  - omitting `sequence.content` renders the content above and the form at the bottom.
+1. When more than one sequence is required, all sequences must be named.
+    - For multiple sequences, the name of the sequence must be provided in the `sequence.name` of the form (in the example `collect-data-sq`).
+    - `sequence.name` must be included in the header of every sub-page of the sequence.
+    - The `next_page` process must be given the sequence name.
+    - If only one sequence is needed, `sequence.name` may be omitted, in which case, the name defaults to `default`.
+    - With only one sequence `next_page` should be set to `true`.
 
 ## To Do
 
 - [ ] Allow for named forms instead of forms in the page header
-- [ ] Allow for named sequence stages in banner
-- [ ] Styling of stage banner, highlighting the active stage.
+- [ ] Allow for named sequence stages in banner, in addition or together with stage icons.
+- [ ] Provide backwards navigation to previous stages.
