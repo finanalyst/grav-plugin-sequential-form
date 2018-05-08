@@ -1,0 +1,23 @@
+{% extends 'partials/base.html.twig' %}
+
+{% if sequence %}
+    {% set seq_data = sequence %}
+{% else %}
+    {% set seq_name = 'sequence_' ~ (page.header.sequence.name?:'default') %}
+    {% set seq_obj = grav.session.getFlashObject( seq_name ) %}
+    {% set dum = grav.session.setFlashObject( seq_name, seq_obj ) %}
+    {% set seq_data = seq_obj.value('_sequence') %}
+{% endif %}
+
+{% block content %}
+    {% if page.header.sequence.banner %}
+        {% include "partials/banner.html.twig" with seq_data %}
+    {% endif %}
+    {% if page.header.sequence.content is same as( 'above' ) %}
+        {{ content|raw }}
+    {% endif %}
+    {%  include "forms/form.html.twig" %}
+    {% if not page.header.sequence.content is same as( 'above' ) %}
+        {{ content|raw }}
+    {% endif %}
+{% endblock %}

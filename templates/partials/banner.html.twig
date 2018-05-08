@@ -1,0 +1,12 @@
+<div class="sqform-banner"><ul>
+    <li{% if seq_data.stage == 0 %} class="sqform-select"{% endif %}>
+        {% if seq_data.icons[0] %}<i class="fa fa-{{ seq_data.icons[0] }} fa-2x"></i>
+        {% else %}Stage 0
+        {% endif %}</li>
+{% for stage in seq_data.routes %}
+    <li{% if seq_data.stage == loop.index %} class="sqform-select"{% endif %}>
+        {% if seq_data.icons[loop.index] %}<i class="fa fa-{{ seq_data.icons[loop.index] }} fa-2x"></i>
+        {% else %}Stage {{ loop.index }}
+        {% endif %}</li>
+{% endfor %}
+</ul></div>
