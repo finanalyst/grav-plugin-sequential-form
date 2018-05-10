@@ -1,3 +1,7 @@
+# v1.0.2
+## 10 May 2018
+1. [](#update)
+    * change TwigPageVariables to onTwigSiteVariables
 # v1.0.1
 ## 10 May 2018
 1. [](#update)

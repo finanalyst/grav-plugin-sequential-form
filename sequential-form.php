@@ -29,7 +29,7 @@ class SequentialFormPlugin extends Plugin
         // Enable the main event we are interested in
         $this->enable([
             'onTwigTemplatePaths' => ['onTwigTemplatePaths',0],
-            'onTwigPageVariables' => ['onTwigPageVariables',0],
+            'onTwigSiteVariables' => ['onTwigSiteVariables',0],
             'onFormProcessed' => ['onFormProcessed', 0]
         ]);
     }
@@ -41,7 +41,7 @@ class SequentialFormPlugin extends Plugin
             $this->grav['assets']->addCss('plugin://sequential-form/css/sqforms.css');
         }
     }
-    public function onTwigPageVariables() {
+    public function onTwigSiteVariables() {
         // Is there a form with a sequence on this page?
         $sequence = $this->grav['page']->header()->{'form'}['process'][0]['sequence'];
         if ( $sequence )  {
