@@ -1,5 +1,5 @@
 name: Sequential Form
-version: 1.0.0
+version: 1.0.1
 description: A sequence of pages, each with a form is linked, with all form data processed according to the final process
 icon: link
 author:

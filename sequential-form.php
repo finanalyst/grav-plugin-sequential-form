@@ -8,7 +8,7 @@ use RocketTheme\Toolbox\Event\Event;
 use ReflectionProperty;
 
 /**
- * Class MypluginPlugin
+ * Class SequentialFormPlugin
  * @package Grav\Plugin
  */
 class SequentialFormPlugin extends Plugin
@@ -120,6 +120,9 @@ class SequentialFormPlugin extends Plugin
                     $seq_name = 'sequence_' . ($params['name']?:'default');
                     $url = ((string)$params['routes'][0]);
                     $origin = $this->grav['page']->route() ;
+                    if ($origin === '/') { // sequence form is on home page, so get page's slug
+                        $origin = $this->grav['page']->header()->{'slug'};
+                    }
                     $sequence = [
                         'stage' => 1,
                         'routes' => $params['routes'] ,
