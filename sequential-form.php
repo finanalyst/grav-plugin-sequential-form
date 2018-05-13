@@ -43,7 +43,9 @@ class SequentialFormPlugin extends Plugin
     }
     public function onTwigSiteVariables() {
         // Is there a form with a sequence on this page?
-        $sequence = $this->grav['page']->header()->{'form'}['process'][0]['sequence'];
+        if ( ! empty($this->grav['page']->header()->{'form'}['process'][0]['sequence']) )
+            $sequence = $this->grav['page']->header()->{'form'}['process'][0]['sequence'];
+        else $sequence = null;
         if ( $sequence )  {
             $this->grav['twig']->twig_vars['sequence'] = $sequence;
         }
@@ -117,7 +119,9 @@ class SequentialFormPlugin extends Plugin
             case 'sequence':
                 // First time through, so create a FlashObject with the initial Form parameters
                 if ( sizeof($params['routes']) >= 1 ) { // if no sequence data then exit without change
-                    $seq_name = 'sequence_' . ($params['name']?:'default');
+                    $seq_name = 'sequence_';
+                    if (isset($params['name']) ) $seq_name .=  $params['name'];
+                    else $seq_name .= 'default';
                     $url = ((string)$params['routes'][0]);
                     $origin = $this->grav['page']->route() ;
                     if ($origin === '/') { // sequence form is on home page, so get page's slug
