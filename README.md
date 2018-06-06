@@ -68,11 +68,13 @@ The contents of these files is as follows
 ```yaml
 ---
 title: User data
+slug: start
 sequence:
     banner: true
     content: above
+cache_enable: false
 form:   
-  name: user-data`  
+  name: user-data
   fields:
     - name: location
       type: text
@@ -96,7 +98,7 @@ form:
               - address-card
               - video-camera
               - thumbs-up
-      - display: start/final
+      - redirect: start/final
 ---
     # Collect Data
 ```
@@ -176,8 +178,8 @@ the first form (the one that has `sequence` as a process).
     - `sequence.name` must be included in the header of every sub-page of the sequence.
     - The `next_page` process must be given the sequence name.
     - If only one sequence is needed, `sequence.name` may be omitted, in which case, the name defaults to `default`.
-    - With only one sequence `next_page` should be set to `true`.
 1. In order to stop a sequence, and return to the first stage with no data in the form, include a `submit` button, together with the task `sequence_reset`.
+1. It is best to specify `slug: route_name` in the root `sequence` page if it is desired for the sequence to end, as in the example, with a redirect to a different page. In the example the first sequence has `slug: start` and the **Form** process has `redirect: start/final`
 
 ## To Do
 

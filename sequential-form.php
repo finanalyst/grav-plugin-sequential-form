@@ -59,8 +59,9 @@ class SequentialFormPlugin extends Plugin
         switch ($action) {
             case 'next_page':
                 $seq_name = 'sequence_';
-                if ($params == true ) $seq_name .= 'default';
-                    else $seq_name .=  $params;
+                $header = $this->grav['page']->header()->{'sequence'};
+                if ( isset($header['name']) ) $seq_name .= $header['name'];
+                    else $seq_name .=   'default';
                 $sumForm = $this->grav['session']->getFlashObject( $seq_name ); // this also removes the object from the session
                 // trap a sequence reset button
                 if (isset($_POST['task']) && $_POST['task'] == 'sequence_reset' ) {
@@ -87,18 +88,11 @@ class SequentialFormPlugin extends Plugin
                          $rp = new ReflectionProperty('Grav\Plugin\Form', 'items');
                          $rp->setAccessible(true);
                          $items = $rp->getValue($sumForm);
-                         $procs = $items['process'][0];
-                         $add = false;
-                         $newproc = [];
-                         foreach ($procs as $action => $data) {
-                             if (is_numeric($action)) {
-                                 $action = \key($data);
-                                 $data = $data[$action];
-                             }
-                             if($add) array_push($newproc, array($action => $data));
-                             $add |= $action == 'sequence';
-                         }
-                         $items['process'] = $newproc;
+                         $procs = $items['process'];
+                         do {
+                             $action = array_shift($procs);
+                         } while ( \key($action) !== 'sequence' );
+                         $items['process'] = $procs;
                          $rp->setValue($sumForm,$items);
                          $pages = $this->grav['pages'];
                          $page = $pages->dispatch($sequence['origin'], true);
