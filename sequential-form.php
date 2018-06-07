@@ -67,7 +67,7 @@ class SequentialFormPlugin extends Plugin
                 if (isset($_POST['task']) && $_POST['task'] == 'sequence_reset' ) {
                     $this->grav['session']->getFlashObject('form' ); // reset form
                     $sequence = $sumForm->getData()->toArray()['_sequence'];
-                    $this->grav->redirect($sequence['origin'] . '/' . $url);
+                    $this->grav->redirect($sequence['origin']);
                 }
                 if ( $sumForm ) {
                     // sequence has started so we have sequence data
