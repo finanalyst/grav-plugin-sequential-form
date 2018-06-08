@@ -1,3 +1,8 @@
+#v1.0.5
+## 8 June 2018
+1. [](#bug fix)
+    * update to slug when on home page.
+    
 #v1.0.4
 ## 6 June 2018
 1. [](#bug fix)
