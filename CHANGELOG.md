@@ -1,8 +1,14 @@
+#v1.0.6
+## 26 June 2018
+1. [](#bugfix)
+    * added own 'onFormValidationError' function so that errors in subprocesses are
+    handled in the first sequence.md form, and not in the subform.
+
 #v1.0.5
 ## 8 June 2018
 1. [](#bug fix)
     * update to slug when on home page.
-    
+
 #v1.0.4
 ## 6 June 2018
 1. [](#bug fix)

@@ -30,7 +30,8 @@ class SequentialFormPlugin extends Plugin
         $this->enable([
             'onTwigTemplatePaths' => ['onTwigTemplatePaths',0],
             'onTwigSiteVariables' => ['onTwigSiteVariables',0],
-            'onFormProcessed' => ['onFormProcessed', 0]
+            'onFormProcessed' => ['onFormProcessed', 0],
+            'onFormValidationError' => ['onFormValidationError', 0]
         ]);
     }
 
@@ -135,5 +136,20 @@ class SequentialFormPlugin extends Plugin
                 }
                 break;
         }
+    }
+
+   public function onFormValidationError(Event $event)
+    {
+        $form = $event['form'];
+
+        if (isset($event['message'])) {
+            $form->status = 'error';
+            $form->message = $event['message'];
+            $form->messages = $event['messages'];
+        }
+        $twig = $this->grav['twig'];
+        $twig->twig_vars['form'] = $form;
+        // will return to initial sequence form. 
+        $event->stopPropagation();
     }
 }

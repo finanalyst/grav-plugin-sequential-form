@@ -10,14 +10,19 @@
 {% endif %}
 
 {% block content %}
-    {% if page.header.sequence.banner %}
-        {% include "partials/banner.html.twig" with seq_data %}
-    {% endif %}
-    {% if page.header.sequence.content is same as( 'above' ) %}
-        {{ content|raw }}
-    {% endif %}
-    {%  include "forms/form.html.twig" %}
-    {% if not page.header.sequence.content is same as( 'above' ) %}
-        {{ content|raw }}
+    {% if form.error %}
+        {{ form.message }}
+    {% else %}
+        {% if page.header.sequence.banner %}
+            {% include "partials/banner.html.twig" with seq_data %}
+        {% endif %}
+
+        {% if page.header.sequence.content is same as( 'above' ) %}
+            {{ content|raw }}
+        {% endif %}
+        {%  include "forms/form.html.twig" %}
+        {% if not page.header.sequence.content is same as( 'above' ) %}
+            {{ content|raw }}
+        {% endif %}
     {% endif %}
 {% endblock %}
