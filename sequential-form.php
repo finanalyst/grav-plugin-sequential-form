@@ -149,7 +149,18 @@ class SequentialFormPlugin extends Plugin
         }
         $twig = $this->grav['twig'];
         $twig->twig_vars['form'] = $form;
-        // will return to initial sequence form. 
+
+        // cause return to initial sequence form.
+                $uri = $this->grav['uri'];
+                $route = $uri->route();
+                preg_match('/^(.+)\/[^\/]+$/',$route,$match);
+                $pages = $this->grav['pages'];
+                $page = $pages->dispatch($match[1], true);
+                if ($page) {
+                    unset($this->grav['page']);
+                    $this->grav['page'] = $page;
+                }
+
         $event->stopPropagation();
     }
 }
